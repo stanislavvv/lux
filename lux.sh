@@ -82,7 +82,7 @@ is_percentage() {
 
 check_perm() {
     _ctrl="${1}"
-    udev_rule="/etc/udev/rules.d/99-lux.rules"
+    udev_rule="/lib/udev/rules.d/99-lux.rules"
 
     if [ ! -w "${_ctrl}/brightness" ] ; then
         if [ "$(id -u)" -ne 0 ]; then
