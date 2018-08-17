@@ -32,4 +32,7 @@ uninstall:
 	$(RM) -r $(LICENSEDIR)
 	$(RM) $(MANDIR)/$(MANPAGE) $(UDEVDIR)/$(UDEVRULE) $(BINDIR)/$(PKGNAME)
 
-.PHONY: install uninstall
+clean:
+	$(RM) -f $(MANPAGE)
+
+.PHONY: install uninstall clean
