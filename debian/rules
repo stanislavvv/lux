@@ -1,25 +1,64 @@
 #!/usr/bin/make -f
-# See debhelper(7) (uncomment to enable)
-# output every command that modifies files on the build system.
-#export DH_VERBOSE = 1
+
+# Uncomment this to turn on verbose mode.
+# export DH_VERBOSE=1
+
+# # Support parallel build
+#ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+#	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+#	MAKEFLAGS += -j$(NUMJOBS)
+#endif
+
+build: build-prep
+
+build-prep:
+	dh_testdir
+
+timestamp:
+	touch $@
+
+build-stamp:
+	touch build-stamp
+
+# for lintian
+build-indep: build
+build-arch: build
+
+clean:
+	dh_testdir
+	rm -f build-stamp timestamp configure-stamp
+	dh_clean
 
 
-# see FEATURE AREAS in dpkg-buildflags(1)
-#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
 
-# see ENVIRONMENT in dpkg-buildflags(1)
-# package maintainers to append CFLAGS
-#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
-# package maintainers to append LDFLAGS
-#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
-
-
-%:
-	dh $@
+	dh_installdirs -A
+	make lux.1.gz
+	install -m 644 lux.1.gz debian/lux/usr/share/man/man1/
+	install -m 644 99-lux.rules debian/lux/lib/udev/rules.d/
+	install -m 755 -T lux.sh debian/lux/usr/bin/lux
 
 
-# dh_make generated override targets
-# This is example for Cmake (See https://bugs.debian.org/641051 )
-#override_dh_auto_configure:
-#	dh_auto_configure -- #	-DCMAKE_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)
+binary-arch: build install
+# We have nothing to do by default.
 
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs debian/README.Debian CONTRIBUTING.md LICENSE README.md
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

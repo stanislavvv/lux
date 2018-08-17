@@ -7,7 +7,7 @@ Standards-Version: 3.9.8
 Homepage: https://github.com/Ventto/lux
 
 Package: lux
-Architecture: any
+Architecture: all
 Depends: ${misc:Depends}
 Description: POSIX Shell script to easily control backlight brightness
  KISS and POSIX Shell script to easily control brightness on backlight-controllers.
