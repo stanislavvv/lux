@@ -1,10 +1,10 @@
 MANDIR      = $(DESTDIR)/usr/share/man/man1
-LICENSEDIR  = $(DESTDIR)/usr/share/licenses/lux
-UDEVDIR     = $(DESTDIR)/etc/udev/rules.d
+LICENSEDIR  = $(DESTDIR)/usr/share/doc/lux
+UDEVDIR     = $(DESTDIR)/lib/udev/rules.d
 BINDIR      = $(DESTDIR)/usr/bin
 
 PKGNAME     = lux
-SCRIPT      = $(PKGNAME).sh
+SCRIPT      = ./$(PKGNAME).sh
 UDEVRULE    = 99-$(PKGNAME).rules
 MANPAGE     = $(PKGNAME).1.gz
 
@@ -18,7 +18,9 @@ install: $(MANPAGE)
 	chmod 644 $(UDEVRULE)
 	chmod 755 $(SCRIPT)
 	cp $< $(MANDIR)/$<
-	cp LICENSE $(LICENSEDIR)/LICENSE
+	cp LICENSE $(LICENSEDIR)/
+	cp CONTRIBUTING.md $(LICENSEDIR)/
+	cp README.md $(LICENSEDIR)/
 	cp $(UDEVRULE) $(UDEVDIR)/$(UDEVRULE)
 	cp $(SCRIPT) $(BINDIR)/$(PKGNAME)
 

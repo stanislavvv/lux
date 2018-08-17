@@ -1,0 +1,13 @@
+Source: lux
+Section: unknown
+Priority: optional
+Maintainer: Stanislav Vlasov <stanislav.v.v@gmail.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/Ventto/lux
+
+Package: lux
+Architecture: any
+Depends: ${misc:Depends}
+Description: POSIX Shell script to easily control backlight brightness
+ KISS and POSIX Shell script to easily control brightness on backlight-controllers.
